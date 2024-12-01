@@ -1,39 +1,48 @@
 import '../utils/index.dart';
 
-/// Every day should extend [GenericDay] to have access to the corresponding
-/// input and a common interface.
-///
-/// Naming convention is set to pad any single-digit day with `0` to have proper
-/// ordering of files and correct mapping between input for days and the day
-/// files.
 class Day01 extends GenericDay {
-  // call the superclass with an integer == today´s day
   Day01() : super(1);
 
-  /// The [InputUtil] can be accessed through the superclass variable `input`. \
-  /// There are several methods in that class that parse the input in different
-  /// ways, an example is given below
-  ///
-  /// The return type of this is `dynamic` for [GenericDay], so you can decide
-  /// on a day-to-day basis what this function should return.
   @override
-  List<int> parseInput() {
-    final lines = input.getPerLine();
-    // exemplary usage of ParseUtil class
-    return ParseUtil.stringListToIntList(lines);
+  (List<int> left, List<int> right) parseInput() {
+    final rawInput = input.getPerLine();
+    final left = <int>[];
+    final right = <int>[];
+
+    for (final line in rawInput) {
+      final sides = line.split('   ');
+      left.add(int.parse(sides[0]));
+      right.add(int.parse(sides[1]));
+    }
+
+    return (left, right);
   }
 
-  /// The `solvePartX` methods always return a int, the puzzle solution. This
-  /// solution will be printed in main.
   @override
   int solvePart1() {
-    // TODO implement
-    return 0;
+    final (left, right) = parseInput();
+    left.sort();
+    right.sort();
+
+    var differenceSum = 0;
+
+    for (var i = 0; i < left.length; i++) {
+      differenceSum += (left[i] - right[i]).abs();
+    }
+
+    return differenceSum;
   }
 
   @override
   int solvePart2() {
-    // TODO implement
-    return 0;
+    final (left, right) = parseInput();
+
+    var score = 0;
+
+    for (final number in left) {
+      score += number * right.where((e) => e == number).length;
+    }
+
+    return score;
   }
 }

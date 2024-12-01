@@ -3,3 +3,5 @@
 .dart_tool/aoc
 .packages
 build/
+input/
+.DS_Store
